@@ -1,8 +1,19 @@
 const path = require('path');
 const express = require('express');
-
+const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
+
+
+// url: 'mongodb+srv://austinandrews:nc0bYi09qiPGM7tV@cluster0.vhmwj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+
+mongoose.connect('mongodb+srv://austinandrews:nc0bYi09qiPGM7tV@cluster0.vhmwj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connection.once('open', () => {
+  console.log('Connected to Database');
+});
+
+
 
 /**
  * handle parsing request body
