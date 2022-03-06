@@ -21,7 +21,7 @@ const oAuth = {
   requestUserAuthorization: function requestUserAuthorization(req, res, next) {
     // This URL can be found in the Zoom App Marketplace at:
     // Manage > Created Apps > Features for Teachers > Activation
-    const url = 'https://zoom.us/oauth/authorize?response_type=code&client_id=uRIyzVuNTxyDMdGVphG80A&redirect_uri=http%3A%2F%2Flocalhost%3A8080';
+    const url = 'https://zoom.us/oauth/authorize?response_type=code&client_id=150y1dfvSZa9MV9NgIQKwA&redirect_uri=http%3A%2F%2Flocalhost%3A8080';
 
     //  It's also possible to put it together manually based on this table from the Zoom docs:
     // https://marketplace.zoom.us/docs/guides/auth/oauth#step-1-request-user-authorization
@@ -34,7 +34,7 @@ const oAuth = {
   // https://marketplace.zoom.us/docs/guides/auth/oauth#step-2-request-access-token
   requestAccessToken: function requestAccessToken(req, res, next) {
     // appAuthorizationString will always be the same for every request.
-    const appAuthorizationString = 'Basic VHZrQXhVOFIwS21CX1pTTHRXNzRBOlB2M3NLclJjRUFTV2I3NHE5em81Y1NxNE1ETVZscTRk';
+    const appAuthorizationString = 'Basic MTUweTFkZnZTWmE5TVY5TmdJUUt3QToyaFdKWnJsazJacElURGoxTkdDWHVQcnBMczdpNlFFUg==';
     // usersAuthorizationCode will be different for every request.
     // The current string is a placeholder so I can test that the function works.
     const usersAuthorizationCode = '4L79g4rp6s_bfY7EMlDQZOqhwVuzG1N7w'
