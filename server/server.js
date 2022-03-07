@@ -44,9 +44,10 @@ app.get('/api/home',
   serverController.getAuthCode, 
   serverController.getAccessToken,
   serverController.getMeetingID,
+  serverController.getUUID,
   (req, res) => {
-    console.log('made it');
-    res.send(res.locals.meetingID);
+    console.log('final endpoint handler');
+    res.send(res.locals.UUID);
   }
 );
 
