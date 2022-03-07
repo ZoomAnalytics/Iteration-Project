@@ -43,7 +43,7 @@ app.use(express.static(path.join(__dirname,'../dist')));
 app.get('/api/home', 
   serverController.getAuthCode, 
   serverController.getAccessToken,
-  (req, res) => res.send(res.locals.authCode)
+  (req, res) => res.send(res.locals.accessToken)
 );
 
 

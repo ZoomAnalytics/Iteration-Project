@@ -1,5 +1,6 @@
 const { resolve } = require('path/posix');
-const Class = require('./Model/model')
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const Class = require('./Model/model');
 
 const serverController = {};
 
@@ -17,11 +18,12 @@ serverController.getAuthCode = async (req, res, next) => {
     } 
 };
 
-serverController.getAcessToken = async (req, res, next) => {
+serverController.getAccessToken = async (req, res, next) => {
     try {
+        console.log('get token');
         const appAuthorizationString = 'Basic MTUweTFkZnZTWmE5TVY5TmdJUUt3QToyaFdKWnJsazJacElURGoxTkdDWHVQcnBMczdpNlFFUg==';
         const usersAuthorizationCode = res.locals.authCode;
-        const redirect_uri = 'http://localhost:8080';
+        const redirect_uri = 'http://localhost:8080/api/home';
 
         const params = new URLSearchParams();
         params.append('code', usersAuthorizationCode);
@@ -36,9 +38,13 @@ serverController.getAcessToken = async (req, res, next) => {
               },
               body: params,
         }).then(response => response.json())
-        .then(data => res.locals.accessToken = `Bearer ${data.access_token}`)
+        .then(data => {
+            console.log(data);
+            res.locals.accessToken = `Bearer ${data.access_token}`
+        })
         return next()
     } catch (error) {
+        console.log(error);
         return next(error)
     } 
 };
