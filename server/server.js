@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
 
-const serverController = require('/server/ServerController')
+const serverController = require('/server/ServerController');
 
 
 
@@ -29,8 +29,13 @@ mongoose.connection.once('open', () => {
  */
 app.use(express.static(path.resolve(__dirname, '../client')));
 
-app.use('/api/authToken'), serverController.getAuthToken, (req, res) => {
-    res.status(200);
+app.get('/api/oauth-login'), 
+    serverController.loginRedirect, 
+    serverController.getAuthCode, 
+    serverController.getAccessToken, 
+    serverController.getMeetingID, 
+    serverController.getUUID, (req, res) => {
+        res.status(200);
 }
 
 
