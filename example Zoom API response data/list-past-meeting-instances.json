@@ -1,1 +1,9 @@
-{"page_size":30,"total_records":3,"next_page_token":"","meetings":[{"uuid":"fHUIPkfyS7iUdGvM2It//w==","id":76004101910,"host_id":"bfY7EMlDQZOqhwVuzG1N7w","topic":"My Meeting","type":2,"start_time":"2022-03-05T22:00:00Z","duration":30,"timezone":"America/New_York","created_at":"2022-03-05T21:59:27Z","join_url":"https://us02web.zoom.us/j/76004101910?pwd=L-cj69dvDOxgJRfuGe0NCw8wTep_mj.1"},{"uuid":"NmZ+vAveTqa9kYmx3CptgA==","id":71752130677,"host_id":"bfY7EMlDQZOqhwVuzG1N7w","topic":"Conor Chinitz (he/him)'s Zoom Meeting","type":2,"start_time":"2022-03-05T22:22:00Z","duration":1,"timezone":"America/New_York","created_at":"2022-03-05T22:20:53Z","join_url":"https://us02web.zoom.us/j/71752130677?pwd=U6DeJba1Xxjm8u7ErysFsSmvpBoeJt.1"},{"uuid":"K8IMoVu5SNeG4gMbByvgDQ==","id":88973770646,"host_id":"bfY7EMlDQZOqhwVuzG1N7w","topic":"Personal Meeting ID Meeting","type":2,"start_time":"2022-03-06T00:30:00Z","duration":30,"timezone":"America/New_York","created_at":"2022-03-06T00:28:12Z","join_url":"https://us02web.zoom.us/j/2884799541","pmi":"2884799541"}]}
+{"page_size":30,"total_records":3,"next_page_token":"","meetings":
+    [
+        {"uuid":"fHUIPkfyS7iUdGvM2It//w==","id":76004101910,"host_id":"bfY7EMlDQZOqhwVuzG1N7w","topic":"My Meeting","type":2,"start_time":"2022-03-05T22:00:00Z","duration":30,"timezone":"America/New_York","created_at":"2022-03-05T21:59:27Z","join_url":"https://us02web.zoom.us/j/76004101910?pwd=L-cj69dvDOxgJRfuGe0NCw8wTep_mj.1"},
+        
+        {"uuid":"NmZ+vAveTqa9kYmx3CptgA==","id":71752130677,"host_id":"bfY7EMlDQZOqhwVuzG1N7w","topic":"Conor Chinitz (he/him)'s Zoom Meeting","type":2,"start_time":"2022-03-05T22:22:00Z","duration":1,"timezone":"America/New_York","created_at":"2022-03-05T22:20:53Z","join_url":"https://us02web.zoom.us/j/71752130677?pwd=U6DeJba1Xxjm8u7ErysFsSmvpBoeJt.1"},
+        
+        {"uuid":"K8IMoVu5SNeG4gMbByvgDQ==","id":88973770646,"host_id":"bfY7EMlDQZOqhwVuzG1N7w","topic":"Personal Meeting ID Meeting","type":2,"start_time":"2022-03-06T00:30:00Z","duration":30,"timezone":"America/New_York","created_at":"2022-03-06T00:28:12Z","join_url":"https://us02web.zoom.us/j/2884799541","pmi":"2884799541"}
+    ]
+}

@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
 
+const serverController = require('/server/ServerController')
+
+
 
 // url: 'mongodb+srv://austinandrews:nc0bYi09qiPGM7tV@cluster0.vhmwj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
@@ -25,6 +28,11 @@ mongoose.connection.once('open', () => {
  * handle requests for static files
  */
 app.use(express.static(path.resolve(__dirname, '../client')));
+
+app.use('/api/authToken'), serverController.getAuthToken, (req, res) => {
+    res.status(200);
+}
+
 
 
 // catch-all route handler for any requests to an unknown route
