@@ -71,5 +71,4 @@ const oAuth = {
   }
 };
 
-
 module.exports = oAuth;
