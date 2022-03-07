@@ -39,10 +39,9 @@ serverController.getAccessToken = async (req, res, next) => {
               body: params,
         }).then(response => response.json())
         .then(data => {
-            console.log(data);
-            res.locals.accessToken = `Bearer ${data.access_token}`
-        })
-        return next()
+            res.locals.accessToken = `Bearer ${data.access_token}`;
+            return next();
+        });
     } catch (error) {
         console.log(error);
         return next(error)
@@ -70,9 +69,9 @@ serverController.getMeetingID = async (req, res, next) => {
                     res.locals.meetingID.push(meetings[i].pmi)
                 }
             }
+            return next();
         })
         .catch(error)
-        return next()
     } catch (error) {
         return next(error)
     } 
@@ -109,15 +108,12 @@ serverController.getUUID = async (req, res, next) => {
                         })
                     }
                 }
+                return next();
             })  
         }
-        next()
     } catch (error) {
         next(error)
     } 
 };
-
-
-
 
 module.exports = serverController;
