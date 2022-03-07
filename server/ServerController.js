@@ -1,12 +1,11 @@
 const { resolve } = require('path/posix');
-const Class = require('/server/Model/model')
+const Class = require('./Model/model')
 
 const serverController = {};
 
 serverController.loginRedirect = (req,res,next) => {
     const url = 'https://zoom.us/oauth/authorize?response_type=code&client_id=150y1dfvSZa9MV9NgIQKwA&redirect_uri=http%3A%2F%2Flocalhost%3A8080';
     return res.redirect(url);
-
 }
 
 serverController.getAuthCode = async (req, res, next) => {

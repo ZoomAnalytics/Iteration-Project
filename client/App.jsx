@@ -44,6 +44,7 @@ class App extends Component {
 
     loginPage() {
         console.log('Log in');
+        fetch('/api/oauth-login');
     }
 
 }

@@ -21,7 +21,7 @@ const oAuth = {
   requestUserAuthorization: function requestUserAuthorization(req, res, next) {
     // This URL can be found in the Zoom App Marketplace at:
     // Manage > Created Apps > Features for Teachers > Activation
-    const url = 'https://zoom.us/oauth/authorize?response_type=code&client_id=150y1dfvSZa9MV9NgIQKwA&redirect_uri=http%3A%2F%2Flocalhost%3A8080';
+    const url = 'https://zoom.us/oauth/authorize?response_type=code&client_id=150y1dfvSZa9MV9NgIQKwA&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome';
 
     //  It's also possible to put it together manually based on this table from the Zoom docs:
     // https://marketplace.zoom.us/docs/guides/auth/oauth#step-1-request-user-authorization

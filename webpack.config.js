@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './client/index.js',
@@ -7,6 +8,11 @@ module.exports = {
         publicPath: '/dist/',
         filename: 'bundle.js',
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, './index.html')
+        })
+    ],
     mode: process.env.NODE_ENV,
     resolve: {
         extensions: ['.js','.jsx'],
@@ -42,12 +48,10 @@ module.exports = {
     devServer: {
         static: {
             publicPath: '/',
-            directory: path.resolve(__dirname)
+            directory: path.resolve(__dirname, './dist')
         },
-        proxy:{
-            "/api":{
-              target: "http://localhost:3000"
-            }
+        proxy: {
+            "/api": "http://localhost:3000"
           },
     },
 };

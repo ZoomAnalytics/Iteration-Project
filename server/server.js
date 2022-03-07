@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
 
-const serverController = require('/server/ServerController');
+const serverController = require('./ServerController');
 
 
 
@@ -27,16 +27,25 @@ mongoose.connection.once('open', () => {
  /**
  * handle requests for static files
  */
-app.use(express.static(path.resolve(__dirname, '../client')));
+app.use(express.static(path.join(__dirname,'../dist')));
 
-app.get('/api/oauth-login'), 
-    serverController.loginRedirect, 
-    serverController.getAuthCode, 
-    serverController.getAccessToken, 
-    serverController.getMeetingID, 
-    serverController.getUUID, (req, res) => {
-        res.status(200);
-}
+// app.get('/api/oauth-login', 
+//     // serverController.loginRedirect, 
+//     // serverController.getAuthCode, 
+//     // serverController.getAccessToken, // SOMETHING WRONG HERE
+//     // serverController.getMeetingID, 
+//     // serverController.getUUID, 
+//     (req, res) => {
+//         // res.status(200);
+//       res.redirect('https://zoom.us/oauth/authorize?response_type=code&client_id=150y1dfvSZa9MV9NgIQKwA&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome');
+// });
+
+app.get('/api/home', 
+  serverController.getAuthCode, 
+  serverController.getAccessToken,
+  (req, res) => res.send(res.locals.authCode)
+);
+
 
 
 
