@@ -43,7 +43,6 @@ serverController.getAccessToken = async (req, res, next) => {
             return next();
         });
     } catch (error) {
-        console.log(error);
         return next(error)
     } 
 };
@@ -61,17 +60,18 @@ serverController.getMeetingID = async (req, res, next) => {
             res.locals.meetingID = []
             for (let i = 0; i < meetings.length; i++) {
                 if (!meetings[i].pmi) {
-                    Class.create({meetingID: meetings[i].id})
-                    res.locals.meetingID.push(meetings[i].id)
+                    // Class.create({meetingID: meetings[i].id.toString()})
+                    res.locals.meetingID.push(meetings[i].id.toString())
                 }
                 else {
-                    Class.create({meetingID: meetings[i].pmi})
+                    // Class.create({meetingID: meetings[i].pmi})
                     res.locals.meetingID.push(meetings[i].pmi)
                 }
+                console.log(res.locals.meetingID);
             }
             return next();
         })
-        .catch(error)
+        .catch(error => console.log(error));
     } catch (error) {
         return next(error)
     } 
