@@ -29,30 +29,18 @@ mongoose.connection.once('open', () => {
  */
 app.use(express.static(path.join(__dirname,'../dist')));
 
-// app.get('/api/oauth-login', 
-//     // serverController.loginRedirect, 
-//     // serverController.getAuthCode, 
-//     // serverController.getAccessToken, // SOMETHING WRONG HERE
-//     // serverController.getMeetingID, 
-//     // serverController.getUUID, 
-//     (req, res) => {
-//         // res.status(200);
-//       res.redirect('https://zoom.us/oauth/authorize?response_type=code&client_id=150y1dfvSZa9MV9NgIQKwA&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome');
-// });
-
 app.get('/api/home', 
   serverController.getAuthCode, 
   serverController.getAccessToken,
   serverController.getMeetingID,
-  serverController.getUUID,
+  // serverController.getUUID,
   (req, res) => {
     console.log('final endpoint handler');
-    res.send(res.locals.UUID);
+    res.send(res.locals.meetingID);
+    // res.redirect('/');
+    // res.send(res.locals.UUID);
   }
 );
-
-
-
 
 // catch-all route handler for any requests to an unknown route
 app.use('*', (req, res) => res.status(404).send('404 Error'));

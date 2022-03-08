@@ -24,7 +24,7 @@ class App extends Component {
         addClass={this.addClass} 
         deleteClass={this.deleteClass}
         addRoster={this.addRoster}
-        importMeetingID = {this.importMeetingID}
+        // importMeetingID = {this.importMeetingID}
         /> 
        <Main />    
     </div>

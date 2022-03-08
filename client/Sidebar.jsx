@@ -14,7 +14,7 @@ function Sidebar(props) {
                     {/* send req to backend to grab roster*/}
                     <button onClick = {props.addRoster}> Add Roster </button>
                     </div>
-                    <p> {props.importMeetingID} </p>
+                    {/* <p> {props.importMeetingID} </p> */}
 
                     <small className = "note-meta">
                         Last modified [date]

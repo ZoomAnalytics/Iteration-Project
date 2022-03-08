@@ -1,0 +1,34 @@
+* { 
+  text-decoration: none;
+  font-family: sans-serif;
+}
+
+body {
+  background: url(https://media.giphy.com/media/SVH9y2LQUVVCRcqD7o/giphy.gif);
+}
+
+.App {
+  background-color: #b0d4ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5rem auto;
+  border-radius: 1rem;
+  width: 80vw;
+  height: 20rem;
+}
+
+h1 {
+  color: rgb(238, 155, 0);
+}
+
+a {
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+  background: linear-gradient(180deg, #3f96ff, #0073ff);
+  box-shadow: 0 .2rem .3rem rgb(65, 65, 65);
+  padding: .8rem;
+  border-radius: 1rem;
+}
