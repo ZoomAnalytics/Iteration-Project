@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
 
-const serverController = require('/server/ServerController');
+const serverController = require('./ServerController');
 
 
 
@@ -27,18 +27,20 @@ mongoose.connection.once('open', () => {
  /**
  * handle requests for static files
  */
-app.use(express.static(path.resolve(__dirname, '../client')));
+app.use(express.static(path.join(__dirname,'../dist')));
 
-app.get('/api/oauth-login'), 
-    serverController.loginRedirect, 
-    serverController.getAuthCode, 
-    serverController.getAccessToken, 
-    serverController.getMeetingID, 
-    serverController.getUUID, (req, res) => {
-        res.status(200);
-}
-
-
+app.get('/api/home', 
+  serverController.getAuthCode, 
+  serverController.getAccessToken,
+  serverController.getMeetingID,
+  // serverController.getUUID,
+  (req, res) => {
+    console.log('final endpoint handler');
+    res.send(res.locals.meetingID);
+    // res.redirect('/');
+    // res.send(res.locals.UUID);
+  }
+);
 
 // catch-all route handler for any requests to an unknown route
 app.use('*', (req, res) => res.status(404).send('404 Error'));
