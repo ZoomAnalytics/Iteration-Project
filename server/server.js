@@ -6,16 +6,17 @@ const PORT = 3000;
 
 const serverController = require('./ServerController');
 
+const MONGO_URI = 'mongodb+srv://jamesma1:VZWvrVKGgbtcKiPc@cluster0.gscd4.mongodb.net/Cluster0?retryWrites=true&w=majority';
 
-
-// url: 'mongodb+srv://austinandrews:nc0bYi09qiPGM7tV@cluster0.vhmwj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-
-mongoose.connect('mongodb+srv://austinandrews:nc0bYi09qiPGM7tV@cluster0.vhmwj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
-
-mongoose.connection.once('open', () => {
-  console.log('Connected to Database');
-});
-
+mongoose.connect(MONGO_URI, {
+    // options for the connect method to parse the URI
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: 'zoomData',
+    // sets the name of the DB that our collections are part of
+  })
+    .then(() => console.log('Connected to Mongo DB.'))
+    .catch((err) => console.log(err));
 
 
 /**
@@ -33,7 +34,7 @@ app.get('/api/home',
   serverController.getAuthCode, 
   serverController.getAccessToken,
   serverController.getMeetingID,
-  // serverController.getUUID,
+  serverController.getUUID,
   (req, res) => {
     console.log('final endpoint handler');
     res.send(res.locals.meetingID);
