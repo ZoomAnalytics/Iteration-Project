@@ -5,7 +5,7 @@ const Class = require('./Model/model');
 const serverController = {};
 
 serverController.loginRedirect = (req,res,next) => {
-    const url = 'https://zoom.us/oauth/authorize?response_type=code&client_id=150y1dfvSZa9MV9NgIQKwA&redirect_uri=http%3A%2F%2Flocalhost%3A8080';
+    const url = 'https://zoom.us/oauth/authorize?response_type=code&client_id=ih_6n4W4SuqRMg0qIXoRtQ&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fhome';
     return res.redirect(url);
 }
 
@@ -20,7 +20,7 @@ serverController.getAuthCode = async (req, res, next) => {
 
 serverController.getAccessToken = async (req, res, next) => {
     try {
-        const appAuthorizationString = 'Basic MTUweTFkZnZTWmE5TVY5TmdJUUt3QToyaFdKWnJsazJacElURGoxTkdDWHVQcnBMczdpNlFFUg==';
+        const appAuthorizationString = 'Basic aWhfNm40VzRTdXFSTWcwcUlYb1J0UTpkUnVweXh0N2hmbElpMTZjUU5MZDFRYXV1WHRKUnV3NA==';
         const usersAuthorizationCode = res.locals.authCode;
         const redirect_uri = 'http://localhost:8080/api/home';
 
@@ -48,51 +48,80 @@ serverController.getAccessToken = async (req, res, next) => {
 
 serverController.getMeetingID = async (req, res, next) => {
     try {
-        fetch('https://api.zoom.us/v2/users/me/meetings', {
+        const response = await fetch('https://api.zoom.us/v2/users/me/meetings', {
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': res.locals.accessToken
             },
-        }).then(response => response.json())
-        .then(data => {
-            const meetings = data.meetings;
-            res.locals.meetingID = []
-            for (let i = 0; i < meetings.length; i++) {
-                if (!meetings[i].pmi) {
-                    Class.create({meetingID: meetings[i].id.toString()})
-                    res.locals.meetingID.push(meetings[i].id.toString())
-                }
-                else {
-                    Class.create({meetingID: meetings[i].pmi})
-                    res.locals.meetingID.push(meetings[i].pmi)
-                }
+        });
+        const data = await response.json();
+        const meetings = data.meetings;
+        console.log("meetings: ", meetings)
+        res.locals.meetingID = [];
+        res.locals.meetingUUID = [];
+        for (let i = 0; i < meetings.length; i++) {
+            if (!meetings[i].pmi) {
+                Class.create({meetingID: meetings[i].id.toString()})
+                res.locals.meetingID.push(meetings[i].id.toString())
+                res.locals.meetingUUID.push(meetings[i].uuid.toString())
+
             }
-            return next();
-        })
-        .catch(error => console.log(error));
+            else {
+                Class.create({meetingID: meetings[i].pmi})
+                res.locals.meetingID.push(meetings[i].pmi)
+
+            }
+        }
+        return next();
     } catch (error) {
         return next(error)
     } 
+        // fetch('https://api.zoom.us/v2/users/me/meetings', {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'authorization': res.locals.accessToken
+        //     },
+        // }).then(response => response.json())
+        // .then(data => {
+        //     const meetings = data.meetings;
+        //     // console.log("data log: ", data);
+        //     // console.log("meetings data: ", meetings);
+        //     res.locals.meetingID = []
+        //     for (let i = 0; i < meetings.length; i++) {
+        //         if (!meetings[i].pmi) {
+        //             Class.create({meetingID: meetings[i].id.toString()})
+        //             res.locals.meetingID.push(meetings[i].id.toString())
+        //         }
+        //         else {
+        //             Class.create({meetingID: meetings[i].pmi})
+        //             res.locals.meetingID.push(meetings[i].pmi)
+        //         }
+        //     }
+        //     return next();
+        // })
+    // } catch (error) {
+    //     return next(error)
+    // } 
 };
 
 
 serverController.getUUID = async (req, res, next) => {
     try {
-        
-        const meetingID = res.locals.meetingID;
-        res.locals.UUID = [];
+        const meetingUUID = res.locals.meetingUUID;
 
-        for (let i = 0; i < meetingID.length; i++) {
+        for (let i = 0; i < meetingUUID.length; i++) {
+            console.log(meetingUUID[i])
 
-            // data = await fetch(`https://api.zoom.us/v2/past_meetings/${meetingID[i]}/instances`, {
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'authorization': res.locals.accessToken
-            //     },
-            // });
-            // data = await data.json();
-            // // console.log(`inside for loop -- ${meetingID[i]}`);
-            // // console.log('data', data)
+            data = await fetch(`https://api.zoom.us/v2/past_meetings/${meetingUUID[i]}/participants`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': res.locals.accessToken
+                },
+            });
+            data = await data.json();
+            // console.log(`inside for loop -- ${meetingUUID[i]}`);
+            console.log(meetingUUID);
+            console.log('data', data)
             // const meetings = data.meetings;
             // console.log('meetings', meetings);
             //     for (let i = 0; i < meetings.length; i++) {
@@ -104,29 +133,29 @@ serverController.getUUID = async (req, res, next) => {
             //         })
             //     }
                     
-            fetch(`https://api.zoom.us/v2/past_meetings/${meetingID[i]}/instances`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': res.locals.accessToken
-                },
-            })
-            .then(response => response.json())
-            .then(data => { 
-                console.log(`inside for loop -- ${meetingID[i]}`);
-                const meetings = data.meetings;
-                res.locals.UUID = [];
-                for (let j = 0; j < meetings.length; j++) {
-                        Class.findOneAndUpdate({meetingID: `${meetingID[i]}`}, {$push : {UUID: meetings[j].uuid}}, (err, lecture) => {
-                            if (err) return next(error);
-                            res.locals.UUID.push(meetings[j].uuid)
-                            if (i === meetingID.length - 1) return next();
-                            console.log('UUIDS', res.locals.UUID);
-                        })
-                    }
-                }
-            )
+            // fetch(`https://api.zoom.us/v2/past_meetings/${meetingID[i]}/instances`, {
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'authorization': res.locals.accessToken
+            //     },
+            // })
+            // .then(response => response.json())
+            // .then(data => { 
+            //     console.log(`inside for loop -- ${meetingID[i]}`);
+            //     const meetings = data.meetings;
+            //     res.locals.UUID = [];
+            //     for (let j = 0; j < meetings.length; j++) {
+            //             Class.findOneAndUpdate({meetingID: `${meetingID[i]}`}, {$push : {UUID: meetings[j].uuid}}, (err, lecture) => {
+            //                 if (err) return next(error);
+            //                 res.locals.UUID.push(meetings[j].uuid)
+            //                 if (i === meetingID.length - 1) return next();
+            //                 console.log('UUIDS', res.locals.UUID);
+            //             })
+            //         }
+            //     }
+            // )
         }
-        // return next();
+        return next();
     } catch (error) {
         next(error)
     } 
