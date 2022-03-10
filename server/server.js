@@ -6,6 +6,7 @@ const app = express();
 const PORT = 3000;
 
 const serverController = require('./ServerController');
+const databaseController = require('./DatabaseController');
 
 const MONGO_URI = 'mongodb+srv://jamesma1:VZWvrVKGgbtcKiPc@cluster0.gscd4.mongodb.net/Cluster0?retryWrites=true&w=majority';
 
@@ -47,8 +48,8 @@ app.get(
   },
 );
 
-app.get('/classDate/:date', (req, res) => {
-  
+app.get('/classDate/:selectedDate', databaseController.getClasses, (req, res) => {
+  res.status(200).json(res.locals.meetingsArr);
 });
 
 // catch-all route handler for any requests to an unknown route
