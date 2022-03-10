@@ -1,43 +1,51 @@
 import React from 'react';
 
 //response from backend:
-  //meeting date & time
-  //roster (empty array for now)
-  //attendance list
+//meeting date & time
+//roster (empty array for now)
+//attendance list
 
 //card:
-  //header w/ Date & maybe time in bold
-  //vertical list of names (w/ present/absent if roster used)
+//header w/ Date & maybe time in bold
+//vertical list of names (w/ present/absent if roster used)
 
-export const MeetingResult = (props) => {
-  const attendanceArr = props.meeting.attendance;
-  const rosterArr = props.meeting.roster;
+function MeetingResult(props) {
+  console.log('meetingResult rendering');
+  const { meetings } = props;
+  // [
+  //   {
+  //     date: '2022-03-05',
+  //     roster: ['Alex', 'Louie', 'Ian', 'James'],
+  //     attendance: ['Alex', 'Louie', 'Ian'],
+  //   },
+  // ]
+
+  //const { date } = props.meetings[0];
+  const { attendance, roster } = meetings[0];
+  // console.log('meetings: ', meetings);
+  // console.log('attendance: ', attendance);
+  // console.log('roster: ', roster);
   const arrToPassDown = [];
-  attendanceArr.forEach(elem =>{
-    if(rosterArr.includes(elem)){
-      arrToPassDown.push(<PersonAttendance person={ {elem: 'present'} } />)
+  roster.forEach((elem) => {
+    if (attendance.includes(elem)) {
+      arrToPassDown.push(<div>{elem}: present</div>);
     } else {
-      arrToPassDown.push(<PersonAttendance person={ {elem: 'absent'} } />)
+      arrToPassDown.push(<div>{elem}: absent</div>);
     }
-  })
-  for(let i = 0; i < arrToPassDown.length; i++){}
-  return(
-    {arrToPassDown}
-  )
+  });
+
+  return (
+    <>
+      <div>{meetings[0].date}</div>
+      <div>{arrToPassDown}</div>
+    </>
+  );
 }
-
-export const PersonAttendance = () => {
-  return(
-    //person's name: attendance
-  )
-  //each personAttendance instance will be pushed into an array which is then rendered on meetingResult
-  //each meetingResult renders onto App
-}
-
-
 
 // const testObj ={
 //   date: "2022-03-05",
 //   roster: ['Alex', 'Louie', 'Ian', 'James'],
 //   attendance: ['Alex', 'Louie', 'Ian', 'James'],
 // }
+
+export default MeetingResult;

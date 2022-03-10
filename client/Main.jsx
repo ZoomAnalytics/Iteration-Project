@@ -1,33 +1,48 @@
-import React from 'react';
-import { MeetingResult, PersonAttendance } from './MeetingResult';
+import React, { useEffect, useState, useRef } from 'react';
+import MeetingResult from './MeetingResult';
+// let meetingsArr = [{ test: 'test' }];
 
 function Main() {
+  const [meetingResult, setMeetingResult] = useState([]);
+  // const meetingResultArr = [];
+  const shouldStart = useRef(false);
   const buttonClick = () => {
-    //console.log(document.getElementById('month').value);
-
+    shouldStart.current = true;
+    console.log('button clicked');
     const monthVal = document.getElementById('month').value;
     const dayVal = document.getElementById('day').value;
     const yearVal = document.getElementById('year').value;
 
     let strForFetch = '';
     strForFetch = strForFetch.concat(yearVal, '-', monthVal, '-', dayVal);
-    console.log(strForFetch);
-    let meetingsArr;
 
-    fetch(`/classDate/${strForFetch}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    // fetch(`/classDate/${strForFetch}`, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     meetingsArr = data.meetings;
+    //     for (let i = 0; i < meetingsArr.length; i += 1) {
+    //       meetingResultArr.push(<MeetingResult meeting={meetingsArr[i]} />);
+    //     }
+    //   })
+    //   .then((arrComp) => setMeetingResult(arrComp));
+
+    const testResult = [
+      {
+        date: '2022-03-05',
+        roster: ['Alex', 'Louie', 'Ian', 'James'],
+        attendance: ['Alex', 'Louie', 'Ian'],
       },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        meetingsArr = data.meetings;
-      });
-    const meetingResultArr = [];
-    for (let i = 0; i < meetingsArr.length; i += 1) {
-      meetingResultArr.push(<MeetingResult meeting={meetingsArr[i]} />);
-    }
+    ];
+    // const testComponent = <MeetingResult meeting={testResult[0]} />;
+    setMeetingResult(testResult);
+    // meetingsArr = [testObj];
+    // meetingResultArr.push(<MeetingResult meeting={meetingsArr[0]} />);
+    // console.log(meetingResultArr);
     //put logic to make roster = attendance if roster is empty array
   };
   //generate array of MeetingResult components
@@ -35,7 +50,7 @@ function Main() {
   return (
     <>
       <p>
-        <label for="month">Date: </label>
+        <label htmlFor="month">Date: </label>
         <select id="month">
           <option value="01">January</option>
           <option value="02">February</option>
@@ -50,7 +65,7 @@ function Main() {
           <option value="11">November</option>
           <option value="12">December</option>
         </select>
-        <label for="day"> </label>
+        <label htmlFor="day"> </label>
         <select id="day">
           <option value="01">1</option>
           <option value="02">2</option>
@@ -84,7 +99,7 @@ function Main() {
           <option value="30">30</option>
           <option value="31">31</option>
         </select>
-        <label for="year"> </label>
+        <label htmlFor="year"> </label>
         <select id="year">
           <option value="2022">2022</option>
           <option value="2021">2021</option>
@@ -93,18 +108,14 @@ function Main() {
           <option value="2018">2018</option>
         </select>
         <button onClick={buttonClick} id="select">
-          Submit
+          Search
         </button>
       </p>
-      <p>{meetingResultArr}</p>
+      <div>
+        {shouldStart.current && <MeetingResult meetings={meetingResult} />}
+      </div>
     </>
   );
 }
 
 export default Main;
-
-// const testObj ={
-//     date: "2022-03-05",
-//     roster: ['Alex', 'Louie', 'Ian', 'James'],
-//     attendance: ['Alex', 'Louie', 'Ian', 'James'],
-//   }
