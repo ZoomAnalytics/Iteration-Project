@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
 /* eslint-disable no-await-in-loop */
-const { resolve } = require('path/posix');
 
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const Class = require('./Model/model');
@@ -61,17 +60,12 @@ serverController.getMeetingID = async (req, res, next) => {
     const data = await response.json();
     const { meetings } = data;
     res.locals.classMeeting = {};
-    res.locals.classMeeting.meetingIDs = [];
+
     for (let i = 0; i < meetings.length; i += 1) {
-      if (!meetings[i].pmi) {
-        // Class.create({ meetingID: meetings[i].id.toString() });
-        res.locals.classMeeting.meetingIDs.push(meetings[i].id.toString());
-      } else {
-        // Class.create({ meetingID: meetings[i].pmi });
-        res.locals.classMeeting.meetingIDs.push(meetings[i].pmi);
+      if (meetings[i].pmi) {
+        res.locals.classMeeting.pmiVal = meetings[i].pmi;
       }
     }
-    console.log('line 74 - res.locals.classMeeting', res.locals.classMeeting);
     return next();
   } catch (error) {
     return next(error);
@@ -81,18 +75,21 @@ serverController.getMeetingID = async (req, res, next) => {
 serverController.getUUID = async (req, res, next) => {
   try {
     const { classMeeting } = res.locals;
+    let data = await fetch(`https://api.zoom.us/v2/past_meetings/${classMeeting.pmiVal}/instances`, {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: res.locals.accessToken,
+      },
+    });
+    data = await data.json();
+    classMeeting.pmi = [];
     classMeeting.meetingUUIDs = [];
-    for (let i = 0; i < classMeeting.meetingIDs.length; i += 1) {
-      let data = await fetch(`https://api.zoom.us/v2/past_meetings/${classMeeting.meetingIDs[i]}/instances`, {
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: res.locals.accessToken,
-        },
-      });
-      data = await data.json();
-      classMeeting.meetingUUIDs.push(data.meetings[0].uuid);
+    classMeeting.startTime = [];
+    for (let i = 0; i < data.meetings.length; i += 1) {
+      classMeeting.pmi.push(res.locals.classMeeting.pmiVal);
+      classMeeting.meetingUUIDs.push(data.meetings[i].uuid);
+      classMeeting.startTime.push(data.meetings[i].start_time);
     }
-    console.log('line 95 - res.locals.classMeeting', res.locals.classMeeting);
     return next();
   } catch (error) {
     next(error);
@@ -110,23 +107,48 @@ serverController.getParticipants = async (req, res, next) => {
         },
       });
       data = await data.json();
-      // { participants } = data;
       const { participants } = data;
       const tempArr = [];
-
-      // const participants = data.participants
       for (let j = 0; j < participants.length; j += 1) {
         if (!tempArr.includes(participants[j].name)) { tempArr.push(participants[j].name); }
       }
-      // classMeeting.participants.push(data.participants);
       classMeeting.participants.push(tempArr.sort());
-
-      console.log('line 123 - full participants object ', participants);
     }
-    console.log('line 125 - res.locals.classMeeting', res.locals.classMeeting);
     return next();
   } catch (error) {
-    next(error);
+    return next(error);
+  }
+};
+
+serverController.addMeeting = async (req, res, next) => {
+  try {
+    const { classMeeting } = res.locals;
+    for (let i = 0; i < classMeeting.meetingUUIDs.length; i += 1) {
+      if (classMeeting.participants[i].length > 0) {
+        const foundResult = await Class.findOne({ UUID: classMeeting.meetingUUIDs[i] });
+        // console.log('foundClass result: ', data);
+        if (foundResult === null) {
+          Class.create(
+            {
+              PMI: classMeeting.pmi[i],
+              UUID: classMeeting.meetingUUIDs[i],
+              date: classMeeting.startTime[i],
+              roster: [],
+              attendance: classMeeting.participants[i],
+            },
+          );
+        }
+      }
+    }
+    return next();
+  } catch (error) {
+    return next(
+      {
+        log: 'Error occurred in serverController.addMeeting.',
+        status: 404,
+        message: { err: `An error occurred: ${error}` },
+      },
+    );
   }
 };
 

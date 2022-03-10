@@ -11,13 +11,15 @@ const mongoose = require('mongoose');
 
 const classSchema = new mongoose.Schema(
   {
-    meetingID: { type: String, required: true },
-    courseName: { type: String, required: true },
-    UUID: { type: String },
+    PMI: { type: String, required: true },
+    UUID: { type: String, unique: true },
+    date: { type: String, required: true },
     roster: Array,
     attendance: Array,
   },
 );
+
+
 
 const Class = mongoose.model('class', classSchema);
 
