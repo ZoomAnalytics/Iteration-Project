@@ -41,13 +41,15 @@ app.get(
   serverController.getMeetingID,
   serverController.getUUID,
   serverController.getParticipants,
+  serverController.addMeeting,
   (req, res) => {
-    console.log('final endpoint handler');
-    // res.send(res.locals.participants);
     res.redirect('/');
-    // res.send(res.locals.UUID);
   },
 );
+
+app.get('/classDate/:date', (req, res) => {
+  
+});
 
 // catch-all route handler for any requests to an unknown route
 app.use('*', (req, res) => res.status(404).send('404 Error'));
