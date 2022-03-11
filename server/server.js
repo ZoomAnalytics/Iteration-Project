@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
@@ -25,6 +26,7 @@ mongoose.connect(MONGO_URI, {
  */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 /**
  * handle requests for static files
