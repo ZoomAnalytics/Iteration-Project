@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import MeetingResult from './MeetingResult';
-// let meetingsArr = [{ test: 'test' }];
 
 function Main() {
   const [meetingResult, setMeetingResult] = useState([]);
   // const meetingResultArr = [];
   const shouldStart = useRef(false);
+  const meetingResultArr = [];
   const buttonClick = () => {
     shouldStart.current = true;
     console.log('button clicked');
@@ -15,37 +15,48 @@ function Main() {
 
     let strForFetch = '';
     strForFetch = strForFetch.concat(yearVal, '-', monthVal, '-', dayVal);
-
-    // fetch(`/classDate/${strForFetch}`, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     meetingsArr = data.meetings;
-    //     for (let i = 0; i < meetingsArr.length; i += 1) {
-    //       meetingResultArr.push(<MeetingResult meeting={meetingsArr[i]} />);
-    //     }
-    //   })
-    //   .then((arrComp) => setMeetingResult(arrComp));
-
-    const testResult = [
-      {
-        date: '2022-03-05',
-        roster: ['Alex', 'Louie', 'Ian', 'James'],
-        attendance: ['Alex', 'Louie', 'Ian'],
+    fetch(`http://localhost:3000/classDate/${strForFetch}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    ];
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        // const meetingsArr = data.meetings;
+        // console.log('meetingsArr: ', meetingsArr);
+        // for (let i = 0; i < data.length; i += 1) {
+          // const { date, roster, attendance } = data[i];
+          // meetingResultArr.push(<MeetingResult date={date} roster={roster} attendance={attendance} />);
+
+        // }
+        // console.log('meeting results, ', meetingResultArr);
+        setMeetingResult(data);
+        // console.log('state: ', meetingResult);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // const testResult = [
+    //   {
+    //     date: '2022-03-05',
+    //     roster: ['Alex', 'Louie', 'Ian', 'James'],
+    //     attendance: ['Alex', 'Louie', 'Ian'],
+    //   },
+    // ];
     // const testComponent = <MeetingResult meeting={testResult[0]} />;
-    setMeetingResult(testResult);
+    // setMeetingResult(testResult);
     // meetingsArr = [testObj];
     // meetingResultArr.push(<MeetingResult meeting={meetingsArr[0]} />);
     // console.log(meetingResultArr);
-    //put logic to make roster = attendance if roster is empty array
+    // put logic to make roster = attendance if roster is empty array
   };
-  //generate array of MeetingResult components
+  // generate array of MeetingResult components
+  useEffect(() => {
+    console.log('hello');
+  }, [meetingResultArr.length]);
 
   return (
     <>
@@ -54,7 +65,7 @@ function Main() {
         <select id="month">
           <option value="01">January</option>
           <option value="02">February</option>
-          <option value="03">March</option>
+          <option selected="selected" value="03">March</option>
           <option value="04">April</option>
           <option value="05">May</option>
           <option value="06">June</option>
