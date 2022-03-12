@@ -9,7 +9,7 @@ const PORT = 3000;
 const serverController = require('./ServerController');
 const databaseController = require('./DatabaseController');
 
-const MONGO_URI = 'mongodb+srv://jamesma1:VZWvrVKGgbtcKiPc@cluster0.gscd4.mongodb.net/Cluster0?retryWrites=true&w=majority';
+const MONGO_URI = '';
 
 mongoose.connect(MONGO_URI, {
   // options for the connect method to parse the URI
